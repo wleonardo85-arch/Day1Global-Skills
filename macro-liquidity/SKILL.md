@@ -1,209 +1,209 @@
 ---
 name: macro-liquidity
-description: 宏观流动性监控与风险预警系统。通过追踪4大核心指标（美联储净流动性、SOFR隔夜融资利率、MOVE美债波动率指数、日元套利交易信号）实时评估全球金融体系的流动性状态，输出流动性评级和风险应对建议。当用户提到流动性、美联储缩表、TGA账户、逆回购ON RRP、SOFR利率、MOVE指数、美债波动、日元套利carry trade、USDJPY与利差、缩表对市场影响、钱紧不紧、流动性拐点、金融条件收紧等话题时，务必使用此技能。即使用户只是笼统地问"现在流动性怎么样"或"美联储在抽水还是放水"，也应触发此技能来提供结构化的分析框架。
+description: Macro liquidity monitoring and risk early-warning system. By tracking 4 core indicators (Fed Net Liquidity, SOFR Overnight Financing Rate, MOVE Treasury Volatility Index, Yen Carry Trade Signals), it provides real-time assessment of liquidity conditions in the global financial system, outputting liquidity ratings and risk response recommendations. When users mention topics such as liquidity, Fed balance sheet reduction (QT), TGA account, reverse repo ON RRP, SOFR rate, MOVE index, Treasury volatility, yen carry trade, USDJPY and interest rate differentials, impact of QT on markets, whether money is tight, liquidity inflection points, tightening financial conditions, etc., this skill should be used. Even if users ask broadly "how is liquidity right now" or "is the Fed draining or injecting liquidity," this skill should be triggered to provide a structured analytical framework.
 ---
 
-# 宏观流动性监控系统
+# Macro Liquidity Monitoring System
 
-这个技能帮助你追踪全球金融体系中最关键的"水位"——流动性。流动性可以简单理解为市场里有多少钱在流动。钱多（流动性充裕）时，各类资产倾向于上涨；钱少（流动性收紧）时，资产价格承压。这4个指标覆盖了从美联储"总水龙头"到市场"水管末端"的完整链条。
+This skill helps you track the most critical "water level" in the global financial system — liquidity. Liquidity can be simply understood as how much money is flowing in the market. When there is plenty of money (ample liquidity), asset prices tend to rise; when money is scarce (tight liquidity), asset prices come under pressure. These 4 indicators cover the complete chain from the Fed's "main faucet" to the market's "end of the pipeline."
 
-## 使用场景
+## Use Cases
 
-当用户询问以下类型问题时使用此技能：
-- 现在流动性怎么样 / 美联储在放水还是缩表
-- SOFR 利率走势如何
-- 美债市场波动大不大
-- 日元套利交易会不会爆
-- 宏观环境对风险资产（股票、加密货币）友好吗
+Use this skill when users ask the following types of questions:
+- How is liquidity right now / Is the Fed injecting or draining liquidity
+- What is the SOFR rate trend
+- Is Treasury market volatility high
+- Will the yen carry trade blow up
+- Is the macro environment friendly for risk assets (stocks, crypto)
 
-## 分析框架
+## Analytical Framework
 
-### 4大核心监控指标
+### 4 Core Monitoring Indicators
 
-对每个指标，使用 web_search 搜索最新数据，然后按照下方标准评估。
+For each indicator, use web_search to find the latest data, then evaluate according to the criteria below.
 
-#### 指标1：美联储净流动性（Net Liquidity）
+#### Indicator 1: Fed Net Liquidity
 
-**是什么**：这是衡量美联储实际向市场注入了多少钱的核心公式：
+**What it is**: This is the core formula for measuring how much money the Fed has actually injected into the market:
 
-**净流动性 = 美联储总资产 - TGA余额 - ON RRP余额**
+**Net Liquidity = Fed Total Assets - TGA Balance - ON RRP Balance**
 
-把每个部分拆开来说：
+Breaking down each component:
 
-- **美联储总资产（Fed Balance Sheet）**：美联储持有的国债和MBS（房贷抵押证券）总额。美联储"印钱"买债券 → 总资产增加 → 向市场注入现金。反过来，"缩表"就是让到期债券不再续买 → 总资产减少 → 从市场抽走现金。可以理解为"总水池的大小"。
+- **Fed Total Assets (Fed Balance Sheet)**: The total amount of Treasuries and MBS (Mortgage-Backed Securities) held by the Fed. When the Fed "prints money" to buy bonds → total assets increase → cash is injected into the market. Conversely, "quantitative tightening" (QT) means not reinvesting maturing bonds → total assets decrease → cash is drained from the market. Think of it as "the size of the total water pool."
 
-- **TGA（Treasury General Account，财政部一般账户）**：美国财政部在美联储的"银行账户"。财政部发行国债收到的钱存在这里。TGA余额增加 = 市场上的钱流入了政府账户（抽水）；TGA余额减少 = 政府在花钱，钱流回市场（放水）。可以理解为"政府的蓄水池——存钱是抽水，花钱是放水"。
+- **TGA (Treasury General Account)**: The U.S. Treasury's "bank account" at the Fed. Money received from Treasury bond issuance is deposited here. TGA balance rising = money flowing from the market into the government's account (draining); TGA balance falling = the government is spending, money flowing back to the market (injecting). Think of it as "the government's reservoir — saving is draining, spending is injecting."
 
-- **ON RRP（Overnight Reverse Repurchase，隔夜逆回购）**：货币市场基金等机构把多余的现金"存"在美联储赚利息的工具。ON RRP余额高 = 大量现金趴在美联储账上没有进入市场（钱被"冻住"了）；ON RRP余额低 = 这些钱回流到市场中。可以理解为"美联储的停车场——钱停在这里就没有在外面流动"。
+- **ON RRP (Overnight Reverse Repurchase)**: A facility where money market funds and other institutions "park" excess cash at the Fed to earn interest. High ON RRP balance = large amounts of cash sitting at the Fed not entering the market (money is "frozen"); Low ON RRP balance = that money is flowing back into the market. Think of it as "the Fed's parking lot — money parked here is not circulating."
 
-所以：美联储总资产越大、TGA越低、ON RRP越低 → 净流动性越高 → 对风险资产越有利。
+Therefore: The larger the Fed's total assets, the lower the TGA, and the lower the ON RRP → the higher the net liquidity → the more favorable for risk assets.
 
-**搜索关键词**：`Federal Reserve balance sheet total assets` + `Treasury TGA balance` + `ON RRP balance` 或直接搜 `Fed net liquidity`
+**Search keywords**: `Federal Reserve balance sheet total assets` + `Treasury TGA balance` + `ON RRP balance` or search directly for `Fed net liquidity`
 
-**预警标准**：
-- 净流动性单周下降 > 5% → 🔴 预警：流动性急剧收缩
-- 净流动性缓慢下降但趋势明确 → 🟡 关注：逐步收紧中
-- 净流动性稳定或上升 → ✅ 正常：流动性环境友好
+**Alert criteria**:
+- Net liquidity drops > 5% in a single week → 🔴 Alert: Liquidity contracting sharply
+- Net liquidity declining slowly but with a clear trend → 🟡 Watch: Gradually tightening
+- Net liquidity stable or rising → ✅ Normal: Friendly liquidity environment
 
-**解读要点**：净流动性与标普500、比特币等风险资产的走势有很强的相关性。2022年的大跌很大程度上就是净流动性下降驱动的。关注每周的变化趋势比绝对数值更重要。
-
----
-
-#### 指标2：SOFR（Secured Overnight Financing Rate，担保隔夜融资利率）
-
-**是什么**：华尔街机构之间"借钱过夜"的利率。当银行A今天需要一笔钱来平账，就用手里的国债做抵押，从银行B借一天，明天还。这个借贷利率就是SOFR。
-
-SOFR 已经取代了之前因操纵丑闻而退役的 LIBOR（伦敦银行同业拆借利率），成为全球最重要的基准利率之一。数万亿美元的贷款、衍生品、房贷都以SOFR为定价基准。
-
-SOFR 异常升高意味着：市场上的短期资金供不应求，机构们在"抢钱"。这是流动性紧张最直接的信号。
-
-**搜索关键词**：`SOFR rate today` 或 `secured overnight financing rate latest`
-
-**预警标准**：
-- SOFR > 美联储联邦基金利率上限 + 10bp → 🔴 预警：资金面极度紧张，类似2019年9月"回购危机"
-- SOFR 接近联邦基金利率上限 → 🟡 关注：资金面偏紧
-- SOFR 在联邦基金利率区间内正常波动 → ✅ 正常
-
-**补充说明**：bp（basis point，基点）= 0.01%。10bp = 0.1%。所以如果联邦基金利率上限是5.50%，SOFR超过5.60%就需要警惕。
-
-**解读要点**：SOFR的突然飙升往往是流动性危机的先兆。2019年9月SOFR一夜之间从2%飙到5%以上，迫使美联储紧急注入流动性。日常的小幅波动不用在意，但异常偏离需要高度关注。
+**Key takeaway**: Net liquidity has a strong correlation with risk assets such as the S&P 500 and Bitcoin. The 2022 selloff was largely driven by declining net liquidity. Monitoring weekly trend changes is more important than absolute values.
 
 ---
 
-#### 指标3：MOVE 指数（Merrill Lynch Option Volatility Estimate）
+#### Indicator 2: SOFR (Secured Overnight Financing Rate)
 
-**是什么**：衡量美国国债市场波动率的指标，类似于股市的VIX（恐慌指数），但针对的是债券市场。由美银美林（Bank of America Merrill Lynch）编制，基于美国国债期权的隐含波动率计算。
+**What it is**: The interest rate at which Wall Street institutions "borrow money overnight" from each other. When Bank A needs cash today to settle accounts, it pledges Treasuries as collateral and borrows from Bank B for one day, repaying the next day. This borrowing rate is SOFR.
 
-为什么债券波动率很重要？因为美国国债是全球金融体系的"定价之锚"——几乎所有其他资产的估值都建立在国债利率的基础上。当国债市场剧烈波动时，意味着市场对利率前景极度不确定，这种不确定性会传导到所有资产类别。
+SOFR has replaced the scandal-plagued LIBOR (London Interbank Offered Rate) and become one of the most important benchmark rates globally. Trillions of dollars in loans, derivatives, and mortgages are priced based on SOFR.
 
-**搜索关键词**：`MOVE index today` 或 `MOVE bond volatility index`
+An abnormally elevated SOFR means: Short-term funding in the market is in short supply, and institutions are "scrambling for cash." This is the most direct signal of liquidity stress.
 
-**预警标准**：
-- MOVE > 130 → 🔴 预警：债市剧烈波动，风险资产应考虑止损或对冲
-- MOVE 100-130 → 🟡 关注：波动偏高，需密切监控
-- MOVE < 100 → ✅ 正常：债市相对平静
+**Search keywords**: `SOFR rate today` or `secured overnight financing rate latest`
 
-**历史参考**：
-- 2008年金融危机：MOVE 一度超过 260
-- 2020年3月新冠恐慌：MOVE 飙升至 160+
-- 2023年3月硅谷银行危机：MOVE 达到 180+
-- 正常市场环境：MOVE 通常在 60-100 之间
+**Alert criteria**:
+- SOFR > Fed Funds Rate upper bound + 10bp → 🔴 Alert: Extreme funding stress, similar to the September 2019 "repo crisis"
+- SOFR approaching Fed Funds Rate upper bound → 🟡 Watch: Funding conditions tight
+- SOFR fluctuating normally within the Fed Funds Rate range → ✅ Normal
 
-**解读要点**：MOVE > 130 是一个经验值——当债券市场波动率达到这个水平时，机构投资者往往被迫减少风险敞口（因为国债本身都不安全了），导致股票、加密货币等风险资产遭到抛售。
+**Additional note**: bp (basis point) = 0.01%. 10bp = 0.1%. So if the Fed Funds Rate upper bound is 5.50%, SOFR exceeding 5.60% warrants caution.
+
+**Key takeaway**: A sudden spike in SOFR is often a precursor to a liquidity crisis. In September 2019, SOFR surged overnight from 2% to above 5%, forcing the Fed to inject emergency liquidity. Small daily fluctuations are not concerning, but abnormal deviations require close attention.
 
 ---
 
-#### 指标4：日元套利交易信号（Yen Carry Trade Monitor）
+#### Indicator 3: MOVE Index (Merrill Lynch Option Volatility Estimate)
 
-**是什么**：日元套利交易（Yen Carry Trade）是全球最大的"借低利率货币、投高收益资产"策略。原理很简单：
+**What it is**: An indicator measuring U.S. Treasury market volatility, similar to the stock market's VIX (fear index), but for the bond market. Compiled by Bank of America Merrill Lynch, it is calculated based on implied volatility of U.S. Treasury options.
 
-1. 日本利率极低（长期接近0%），从日本借日元几乎不要利息
-2. 把日元换成美元（卖日元 → 日元贬值 → USDJPY上升）
-3. 用美元去买收益更高的资产（美债、美股等）
-4. 赚的是"利息差"（美国利率 - 日本利率）
+Why does bond volatility matter? Because U.S. Treasuries are the "pricing anchor" of the global financial system — the valuation of virtually all other assets is built on Treasury yields. When the Treasury market experiences violent swings, it signals extreme uncertainty about the interest rate outlook, and this uncertainty transmits to all asset classes.
 
-这个策略有两个关键监控变量：
+**Search keywords**: `MOVE index today` or `MOVE bond volatility index`
 
-- **USDJPY（美元兑日元汇率）**：汇率越高 = 日元越弱 = 套利交易越活跃。如果日元突然走强（USDJPY快速下跌），套利者被迫平仓 → 卖出美元资产 → 引发连锁抛售。
+**Alert criteria**:
+- MOVE > 130 → 🔴 Alert: Severe bond market volatility, consider stop-losses or hedging for risk assets
+- MOVE 100-130 → 🟡 Watch: Elevated volatility, monitor closely
+- MOVE < 100 → ✅ Normal: Bond market relatively calm
 
-- **US2Y - JP2Y 利差（美日2年期国债利差）**：这是套利交易的"利润来源"。利差越大，套利越赚钱，吸引更多资金参与。利差收窄时，套利吸引力下降，可能触发平仓。
+**Historical reference**:
+- 2008 Financial Crisis: MOVE briefly exceeded 260
+- March 2020 COVID panic: MOVE surged to 160+
+- March 2023 Silicon Valley Bank crisis: MOVE reached 180+
+- Normal market conditions: MOVE typically ranges between 60-100
 
-**搜索关键词**：`USDJPY today` + `US 2 year treasury yield` + `Japan 2 year bond yield` 或 `yen carry trade risk`
-
-**预警标准**：
-- USDJPY 单周下跌 > 3%（日元急剧走强）→ 🔴 预警：套利平仓风险，可能引发全球风险资产抛售
-- 美日2年利差快速收窄（单月 > 50bp）→ 🔴 预警：套利基础在瓦解
-- USDJPY 缓慢走弱 + 利差小幅收窄 → 🟡 关注
-- USDJPY 稳定或走强 + 利差维持 → ✅ 正常
-
-**历史案例**：
-- 2024年7-8月：日本央行意外加息 → 日元急升 → 全球套利交易大规模平仓 → 日经225单日暴跌12%，美股、加密货币同步大跌。这是近年来套利交易风险最典型的教训。
-
-**解读要点**：日元套利交易的规模据估计高达数万亿美元。当这笔"隐形杠杆"集中平仓时，冲击力远超想象。关注日本央行的政策动向（是否加息或调整YCC）是预判这个风险的关键。
+**Key takeaway**: MOVE > 130 is an empirical threshold — when bond market volatility reaches this level, institutional investors are often forced to reduce risk exposure (because Treasuries themselves are no longer safe), leading to selloffs in stocks, crypto, and other risk assets.
 
 ---
 
-### 综合评估逻辑
+#### Indicator 4: Yen Carry Trade Signals (Yen Carry Trade Monitor)
 
-统计4个指标的状态：
+**What it is**: The Yen Carry Trade is the world's largest "borrow in low-rate currency, invest in high-yield assets" strategy. The principle is simple:
 
-| 预警情况 | 流动性评级 | 应对建议 |
-|---------|-----------|---------|
-| 0 个预警 | 🟢 充裕 | 流动性环境友好，适合持有风险资产 |
-| 1 个预警 | 🟡 偏紧 | 保持警惕，检查止损位，适度降低杠杆 |
-| 2 个预警 | 🟠 紧张 | 减少风险敞口10-20%，提高现金比例 |
-| 3 个预警 | 🔴 危险 | 大幅减仓风险资产，转向防御（现金、短期国债） |
-| 4 个预警 | 🔴🔴 危机级别 | 最大限度降低风险敞口，对冲尾部风险 |
+1. Japanese interest rates are extremely low (near 0% for an extended period), so borrowing yen costs almost no interest
+2. Convert yen to USD (sell yen → yen depreciates → USDJPY rises)
+3. Use USD to buy higher-yielding assets (Treasuries, U.S. stocks, etc.)
+4. The profit comes from the "interest rate differential" (U.S. rate - Japan rate)
 
-## 输出格式
+This strategy has two key monitoring variables:
 
-使用以下结构化模板输出分析结果：
+- **USDJPY (USD/JPY exchange rate)**: Higher rate = weaker yen = more active carry trade. If the yen suddenly strengthens (USDJPY drops rapidly), carry traders are forced to unwind → sell USD assets → triggering a chain of selloffs.
+
+- **US2Y - JP2Y spread (U.S.-Japan 2-year Treasury spread)**: This is the "profit source" of the carry trade. The wider the spread, the more profitable the carry, attracting more capital. When the spread narrows, carry attractiveness declines, potentially triggering unwinds.
+
+**Search keywords**: `USDJPY today` + `US 2 year treasury yield` + `Japan 2 year bond yield` or `yen carry trade risk`
+
+**Alert criteria**:
+- USDJPY drops > 3% in a single week (yen strengthening sharply) → 🔴 Alert: Carry unwind risk, potential global risk asset selloff
+- U.S.-Japan 2-year spread narrows rapidly (> 50bp in a single month) → 🔴 Alert: Carry trade foundation is eroding
+- USDJPY gradually weakening + spread narrowing slightly → 🟡 Watch
+- USDJPY stable or strengthening + spread maintained → ✅ Normal
+
+**Historical case study**:
+- July-August 2024: Bank of Japan unexpectedly raised rates → yen surged → massive global carry trade unwind → Nikkei 225 plunged 12% in a single day, U.S. stocks and crypto fell in tandem. This is the most prominent recent lesson on carry trade risk.
+
+**Key takeaway**: The scale of the yen carry trade is estimated at several trillion dollars. When this "hidden leverage" unwinds en masse, the impact far exceeds expectations. Monitoring Bank of Japan policy moves (whether it will raise rates or adjust YCC) is key to anticipating this risk.
+
+---
+
+### Comprehensive Assessment Logic
+
+Tally the status of all 4 indicators:
+
+| Alert Count | Liquidity Rating | Recommended Response |
+|-------------|-----------------|---------------------|
+| 0 alerts | 🟢 Ample | Friendly liquidity environment, suitable for holding risk assets |
+| 1 alert | 🟡 Slightly Tight | Stay vigilant, check stop-loss levels, moderately reduce leverage |
+| 2 alerts | 🟠 Tight | Reduce risk exposure by 10-20%, increase cash allocation |
+| 3 alerts | 🔴 Dangerous | Significantly reduce risk asset positions, shift to defensive (cash, short-term Treasuries) |
+| 4 alerts | 🔴🔴 Crisis Level | Minimize risk exposure, hedge tail risks |
+
+## Output Format
+
+Use the following structured template for analysis output:
 
 ```
-# 💧 宏观流动性监控报告
+# 💧 Macro Liquidity Monitoring Report
 
-**日期**：[当前日期]
+**Date**: [current date]
 
-## 📊 指标仪表盘
+## 📊 Indicator Dashboard
 
-| 指标 | 当前数值 | 状态 | 信号 |
-|------|---------|------|------|
-| 净流动性 | [数值]（总资产-TGA-RRP） | [正常/关注/预警] | [简要说明] |
-| SOFR | [利率]% | [正常/关注/预警] | [简要说明] |
-| MOVE指数 | [数值] | [正常/关注/预警] | [简要说明] |
-| USDJPY / 美日利差 | [汇率] / [利差]bp | [正常/关注/预警] | [简要说明] |
+| Indicator | Current Value | Status | Signal |
+|-----------|--------------|--------|--------|
+| Net Liquidity | [value] (Total Assets - TGA - RRP) | [Normal/Watch/Alert] | [brief explanation] |
+| SOFR | [rate]% | [Normal/Watch/Alert] | [brief explanation] |
+| MOVE Index | [value] | [Normal/Watch/Alert] | [brief explanation] |
+| USDJPY / U.S.-Japan Spread | [exchange rate] / [spread]bp | [Normal/Watch/Alert] | [brief explanation] |
 
-### 净流动性构成明细
-- 美联储总资产：$[X] 万亿
-- TGA 余额：$[X] 亿
-- ON RRP 余额：$[X] 亿
-- **净流动性**：$[X] 万亿（周变化：[+/-X]%）
+### Net Liquidity Breakdown
+- Fed Total Assets: $[X] trillion
+- TGA Balance: $[X] billion
+- ON RRP Balance: $[X] billion
+- **Net Liquidity**: $[X] trillion (weekly change: [+/-X]%)
 
-## 🚦 综合评级
+## 🚦 Overall Rating
 
-**流动性状态**：[充裕 / 偏紧 / 紧张 / 危险 / 危机级别]
-**预警指标数**：[X] / 4
+**Liquidity Status**: [Ample / Slightly Tight / Tight / Dangerous / Crisis Level]
+**Number of Alerts**: [X] / 4
 
-## 💼 应对建议
+## 💼 Response Recommendations
 
-[根据评级给出具体建议，区分不同资产类别：]
-- 美股仓位建议
-- 加密资产仓位建议
-- 是否需要对冲及对冲工具建议
+[Provide specific recommendations based on the rating, differentiated by asset class:]
+- U.S. stock position recommendations
+- Crypto asset position recommendations
+- Whether hedging is needed and recommended hedging tools
 
-## 🔮 前瞻观察
+## 🔮 Forward-Looking Observations
 
-[基于搜索到的信息，提示未来1-4周可能影响流动性的事件：]
-- 美联储议息会议 / 缩表计划调整
-- 财政部发债计划（影响TGA）
-- 日本央行政策会议
-- 大规模国债到期/拍卖
+[Based on search results, highlight events in the next 1-4 weeks that may impact liquidity:]
+- Fed policy meeting / QT plan adjustments
+- Treasury issuance plans (impact on TGA)
+- Bank of Japan policy meetings
+- Large-scale Treasury maturities/auctions
 
-## ⚠️ 注意事项
+## ⚠️ Disclaimers
 
-- 流动性指标更适合中期（周度/月度）趋势判断
-- 单一指标短暂异常不构成行动信号，需综合判断
-- 净流动性数据通常有1-2天的滞后
-- 宏观环境复杂，流动性只是影响资产价格的因素之一
-- 以上分析仅供参考，不构成投资建议
+- Liquidity indicators are better suited for medium-term (weekly/monthly) trend assessment
+- A single indicator briefly showing anomalies does not constitute an action signal; comprehensive assessment is needed
+- Net liquidity data typically has a 1-2 day lag
+- The macro environment is complex; liquidity is only one of many factors affecting asset prices
+- The above analysis is for reference only and does not constitute investment advice
 ```
 
-## 执行步骤
+## Execution Steps
 
-1. 使用 web_search 搜索美联储资产负债表最新数据（总资产、TGA、ON RRP）
-2. 搜索 SOFR 最新利率和联邦基金利率区间
-3. 搜索 MOVE 指数最新读数
-4. 搜索 USDJPY 汇率和美日2年期国债利差
-5. 逐一评估每个指标的状态
-6. 统计预警数量，得出综合评级
-7. 搜索未来数周的关键事件日历
-8. 按输出模板生成报告并附上数据来源链接
+1. Use web_search to find the latest Fed balance sheet data (total assets, TGA, ON RRP)
+2. Search for the latest SOFR rate and Fed Funds Rate range
+3. Search for the latest MOVE index reading
+4. Search for the USDJPY exchange rate and U.S.-Japan 2-year Treasury spread
+5. Evaluate the status of each indicator one by one
+6. Tally the number of alerts and determine the overall rating
+7. Search for key events calendar for the coming weeks
+8. Generate the report using the output template and include data source links
 
-## 重要提醒
+## Important Reminders
 
-- 净流动性的三个构成部分需要分别搜索，纽约联储和财政部网站通常有最新数据
-- SOFR数据由纽约联储每日发布，可从 newyorkfed.org 获取
-- MOVE指数可从 TradingView 或财经新闻中获取
-- 日本国债收益率可能需要搜索日本央行或日本财务省数据
-- 如果某个数据搜索不到最新值，注明最近可获取的数据及其日期
-- 所有建议仅供参考，不构成投资建议
+- The three components of net liquidity need to be searched separately; the New York Fed and Treasury websites usually have the latest data
+- SOFR data is published daily by the New York Fed and can be obtained from newyorkfed.org
+- The MOVE index can be found on TradingView or in financial news
+- Japanese government bond yields may require searching the Bank of Japan or Japan's Ministry of Finance data
+- If the latest value for any data point cannot be found, note the most recently available data and its date
+- All recommendations are for reference only and do not constitute investment advice

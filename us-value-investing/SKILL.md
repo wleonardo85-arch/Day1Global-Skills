@@ -1,209 +1,209 @@
 ---
 name: us-value-investing
-description: 美股价值投资分析框架。通过4大核心维度（ROE持续性、负债安全性、自由现金流质量、护城河评估）对上市公司进行系统性价值评估，输出投资评级和分析理由。当用户提到某只美股是否值得长期持有、公司基本面分析、ROE分析、负债率评估、自由现金流、护城河、巴菲特选股、价值投资筛选、某公司财报怎么看、某股票估值是否合理等话题时，务必使用此技能。即使用户只是笼统地问"XX这只股票怎么样"或"帮我分析一下XX的基本面"，也应触发此技能来提供结构化的价值投资分析框架。
+description: US stock value investing analysis framework. Systematically evaluates listed companies through 4 core dimensions (ROE sustainability, debt safety, free cash flow quality, economic moat assessment), outputting investment ratings and analytical reasoning. This skill should be used when users mention topics such as whether a US stock is worth holding long-term, fundamental analysis of a company, ROE analysis, debt ratio assessment, free cash flow, economic moat, Buffett-style stock picking, value investing screening, how to read a company's financial reports, whether a stock's valuation is reasonable, etc. Even if users simply ask something general like "What do you think of stock XX?" or "Help me analyze XX's fundamentals," this skill should be triggered to provide a structured value investing analysis framework.
 ---
 
-# 美股价值投资分析框架
+# US Stock Value Investing Analysis Framework
 
-这个技能帮助你用巴菲特式的价值投资方法，系统性地分析一家美股上市公司是否值得长期持有。通过4大核心维度的量化评估，给出清晰的投资评级。
+This skill helps you systematically analyze whether a US-listed company is worth holding long-term using Buffett-style value investing methods. Through quantitative assessment across 4 core dimensions, it provides a clear investment rating.
 
-## 使用场景
+## Use Cases
 
-当用户询问以下类型问题时使用此技能：
-- 某只美股是否值得买入/长期持有
-- 帮我分析一下某公司的基本面
-- 某公司的财报数据怎么看
-- 这家公司有没有护城河
-- 用价值投资的方法帮我筛选股票
+Use this skill when users ask the following types of questions:
+- Whether a particular US stock is worth buying/holding long-term
+- Help me analyze a company's fundamentals
+- How to interpret a company's financial report data
+- Whether a company has an economic moat
+- Help me screen stocks using value investing methods
 
-## 分析框架
+## Analysis Framework
 
-### 4大核心评估维度
+### 4 Core Assessment Dimensions
 
-对每个维度，使用 web_search 搜索目标公司的最新财报数据，然后按照下方标准评估。
+For each dimension, use web_search to look up the target company's latest financial report data, then evaluate according to the criteria below.
 
-#### 维度1：ROE 持续性（净资产收益率）
+#### Dimension 1: ROE Sustainability (Return on Equity)
 
-**是什么**：ROE（Return on Equity，净资产收益率）= 净利润 ÷ 股东权益。简单理解：公司用股东投入的每100块钱，一年能赚多少钱。ROE 15%意味着每100块股东资本能创造15块利润。这是巴菲特最看重的单一财务指标——他认为一家真正优秀的公司应该能够持续高效地运用资本。
+**What it is**: ROE (Return on Equity) = Net Income / Shareholders' Equity. Simply put: for every $100 shareholders invest in the company, how much profit can it generate in a year. An ROE of 15% means every $100 of shareholder capital creates $15 in profit. This is the single financial metric Buffett values most — he believes a truly excellent company should be able to consistently and efficiently deploy capital.
 
-**关键点**：不是看一年的ROE，而是看**连续3年以上**是否都能保持高水平。一年的高ROE可能是偶然因素（卖了一栋楼、打赢了官司赔偿），只有持续的高ROE才能说明公司有真正的竞争力。
+**Key point**: Don't look at just one year's ROE; check whether it has maintained a high level **consistently for 3+ years**. A single year of high ROE could be due to one-time factors (selling a building, winning a lawsuit), and only sustained high ROE demonstrates genuine competitive strength.
 
-**搜索关键词**：`[公司名] ROE history` 或 `[公司名/股票代码] return on equity 3 year`
+**Search keywords**: `[Company name] ROE history` or `[Company name/ticker] return on equity 3 year`
 
-**评分标准**：
-- 连续3年+ ROE > 20% → ⭐⭐⭐ 优秀（满分3分）
-- 连续3年+ ROE > 15% → ⭐⭐ 良好（2分）
-- ROE 10-15% 或不够稳定 → ⭐ 一般（1分）
-- ROE < 10% 或大幅波动 → 0分
+**Scoring criteria**:
+- 3+ consecutive years ROE > 20% → ⭐⭐⭐ Excellent (3/3 points)
+- 3+ consecutive years ROE > 15% → ⭐⭐ Good (2 points)
+- ROE 10-15% or inconsistent → ⭐ Average (1 point)
+- ROE < 10% or highly volatile → 0 points
 
-**常见陷阱**：
-- 高杠杆可以人为拉高ROE。如果一家公司ROE很高但负债也很高，要打折看待。
-- 回购股票会减少股东权益，从而"虚增"ROE。需要结合实际盈利增长来看。
-- 周期性行业（如石油、芯片）的ROE会随行业周期大幅波动，需要看完整周期。
-
----
-
-#### 维度2：负债安全性（Debt-to-Equity / Debt Ratio）
-
-**是什么**：衡量一家公司借了多少钱来经营。常用两个指标：
-- **资产负债率（Debt-to-Asset Ratio）**= 总负债 ÷ 总资产。50%意味着公司一半的资产是借钱买的。
-- **债务权益比（Debt-to-Equity Ratio）**= 总负债 ÷ 股东权益。1.0意味着借的钱和股东投入的钱一样多。
-
-低负债意味着公司不依赖借钱过日子，在经济下行时更能扛住冲击。高负债的公司在利率上升或收入下降时容易陷入困境。
-
-**搜索关键词**：`[公司名] debt to equity ratio` 或 `[公司名/股票代码] balance sheet debt`
-
-**评分标准**：
-- 资产负债率 < 30% → ⭐⭐⭐ 优秀（满分3分）：几乎无债务压力
-- 资产负债率 30-50% → ⭐⭐ 良好（2分）：负债可控
-- 资产负债率 50-70% → ⭐ 一般（1分）：需关注偿债能力
-- 资产负债率 > 70% → 0分：高杠杆风险
-
-**行业特殊说明**：
-- **银行和金融公司**：天生高负债（因为存款算负债），不能用同样标准。银行看"一级资本充足率"更合适，通常 > 10%为健康。
-- **公用事业和房地产（REITs）**：负债率普遍偏高，50-60%在行业内属正常。
-- **科技公司**：很多优质科技公司负债率极低甚至净现金，这是加分项。
+**Common pitfalls**:
+- High leverage can artificially inflate ROE. If a company has high ROE but also high debt, take it with a grain of salt.
+- Share buybacks reduce shareholders' equity, thereby "inflating" ROE. This needs to be evaluated alongside actual earnings growth.
+- Cyclical industries (e.g., oil, semiconductors) will see ROE fluctuate significantly with industry cycles; a full cycle should be examined.
 
 ---
 
-#### 维度3：自由现金流质量（Free Cash Flow Quality）
+#### Dimension 2: Debt Safety (Debt-to-Equity / Debt Ratio)
 
-**是什么**：自由现金流（Free Cash Flow, FCF）= 经营活动现金流 - 资本支出。简单理解：公司做完所有生意、付完所有日常开支、买完必要的设备厂房之后，**真正剩下来的现金**。
+**What it is**: Measures how much a company borrows to fund its operations. Two commonly used metrics:
+- **Debt-to-Asset Ratio** = Total Liabilities / Total Assets. 50% means half of the company's assets are funded by debt.
+- **Debt-to-Equity Ratio** = Total Liabilities / Shareholders' Equity. 1.0 means borrowings equal shareholders' investment.
 
-为什么要和净利润对比？因为净利润可以通过会计手段"美化"（比如调整折旧方式、确认收入时点），但现金流很难造假——银行账户里有多少钱就是多少钱。当自由现金流 > 净利润的80%时，说明公司的利润是"真金白银"，不是纸面数字。
+Low debt means the company doesn't rely on borrowing to operate and can better withstand downturns. Highly leveraged companies are vulnerable when interest rates rise or revenue declines.
 
-**搜索关键词**：`[公司名] free cash flow` 或 `[公司名/股票代码] cash flow statement`
+**Search keywords**: `[Company name] debt to equity ratio` or `[Company name/ticker] balance sheet debt`
 
-**评分标准**：
-- FCF > 净利润的100% → ⭐⭐⭐ 优秀（满分3分）：现金流比利润还多，质量极高
-- FCF > 净利润的80% → ⭐⭐ 良好（2分）：利润含金量高
-- FCF = 净利润的50-80% → ⭐ 一般（1分）：有一定差距，需关注原因
-- FCF < 净利润的50% 或为负 → 0分：利润质量存疑
+**Scoring criteria**:
+- Debt-to-asset ratio < 30% → ⭐⭐⭐ Excellent (3/3 points): Virtually no debt pressure
+- Debt-to-asset ratio 30-50% → ⭐⭐ Good (2 points): Manageable debt
+- Debt-to-asset ratio 50-70% → ⭐ Average (1 point): Debt repayment capacity needs monitoring
+- Debt-to-asset ratio > 70% → 0 points: High leverage risk
 
-**常见情况说明**：
-- **高增长公司**：亚马逊、特斯拉等高速扩张期的公司，资本支出巨大（建仓库、建工厂），导致FCF暂时偏低。这不一定是坏事，但需要判断投资是否能带来未来回报。
-- **成熟型公司**：可口可乐、宝洁等成熟公司的FCF通常远高于净利润，这是优质"现金牛"的特征。
-- **一次性因素**：某一年FCF异常低可能是因为大额收购或一次性投资，需看多年趋势。
-
----
-
-#### 维度4：护城河评估（Economic Moat）
-
-**是什么**：巴菲特提出的概念，指一家公司防止竞争对手侵蚀其利润的"防御工事"。就像中世纪城堡周围的护城河——河越宽越深，敌人越难攻进来。拥有护城河的公司可以在很长时间内维持高于平均水平的利润率。
-
-**四种主要护城河类型**：
-
-**A. 品牌护城河（Brand）**
-- 消费者愿意为品牌多付钱，即使有更便宜的替代品
-- 例子：苹果（iPhone溢价）、爱马仕（奢侈品定价权）、可口可乐（全球认知度）
-- 搜索验证：`[公司名] brand value ranking` 或 `[公司名] pricing power`
-
-**B. 网络效应（Network Effect）**
-- 用户越多产品越有价值，形成"越用越强"的正循环
-- 例子：Visa/Mastercard（商户和持卡人互相吸引）、Meta（社交网络）、微软Office（所有人都用所以你也得用）
-- 搜索验证：`[公司名] network effect` 或 `[公司名] user growth ecosystem`
-
-**C. 成本优势（Cost Advantage）**
-- 能以比竞争对手低得多的成本提供产品或服务
-- 例子：沃尔玛（规模采购）、台积电（技术+规模壁垒）、Costco（会员模式+极致供应链）
-- 搜索验证：`[公司名] operating margin vs competitors` 或 `[公司名] cost advantage`
-
-**D. 转换成本（Switching Cost）**
-- 客户更换供应商的代价很高（时间、金钱、学习成本）
-- 例子：Salesforce（企业换CRM系统极其痛苦）、Adobe（设计师生态依赖）、Oracle（数据库迁移成本）
-- 搜索验证：`[公司名] customer retention rate` 或 `[公司名] switching costs`
-
-**评分标准**：
-- 拥有2种以上强护城河 → ⭐⭐⭐ 宽护城河（满分3分）
-- 拥有1种明确护城河 → ⭐⭐ 窄护城河（2分）
-- 有一定竞争优势但不明显 → ⭐ 微弱（1分）
-- 无明显护城河，行业竞争激烈 → 0分
+**Industry-specific notes**:
+- **Banks and financial companies**: Inherently high debt (since deposits count as liabilities), so the same standards don't apply. For banks, Tier 1 Capital Ratio is more appropriate; typically > 10% is considered healthy.
+- **Utilities and REITs**: Generally have higher debt ratios; 50-60% is normal within the industry.
+- **Tech companies**: Many quality tech companies have very low debt ratios or even net cash positions, which is a positive indicator.
 
 ---
 
-### 综合评级逻辑
+#### Dimension 3: Free Cash Flow Quality (Free Cash Flow Quality)
 
-将4个维度的得分加总（满分12分）：
+**What it is**: Free Cash Flow (FCF) = Operating Cash Flow - Capital Expenditures. Simply put: the **cash truly left over** after the company completes all its business activities, pays all operating expenses, and purchases necessary equipment and facilities.
 
-| 总分 | 投资评级 | 含义 |
+Why compare it to net income? Because net income can be "window-dressed" through accounting methods (e.g., adjusting depreciation schedules, timing of revenue recognition), but cash flow is hard to fake — the bank account balance is what it is. When FCF exceeds 80% of net income, it indicates the company's profits are "real money," not just numbers on paper.
+
+**Search keywords**: `[Company name] free cash flow` or `[Company name/ticker] cash flow statement`
+
+**Scoring criteria**:
+- FCF > 100% of net income → ⭐⭐⭐ Excellent (3/3 points): Cash flow exceeds profit, extremely high quality
+- FCF > 80% of net income → ⭐⭐ Good (2 points): High-quality earnings
+- FCF = 50-80% of net income → ⭐ Average (1 point): Notable gap, reasons need investigation
+- FCF < 50% of net income or negative → 0 points: Earnings quality is questionable
+
+**Common scenarios**:
+- **High-growth companies**: Companies in rapid expansion phases like Amazon and Tesla have massive capital expenditures (building warehouses, factories), resulting in temporarily low FCF. This isn't necessarily bad, but you need to assess whether the investments will generate future returns.
+- **Mature companies**: Mature companies like Coca-Cola and Procter & Gamble typically have FCF well above net income — a hallmark of quality "cash cows."
+- **One-time factors**: Abnormally low FCF in a particular year could be due to a large acquisition or one-time investment; multi-year trends should be examined.
+
+---
+
+#### Dimension 4: Economic Moat Assessment (Economic Moat)
+
+**What it is**: A concept introduced by Buffett, referring to a company's "defensive fortification" that prevents competitors from eroding its profits. Like the moat around a medieval castle — the wider and deeper the moat, the harder it is for enemies to breach. Companies with moats can maintain above-average profit margins for extended periods.
+
+**Four main types of moats**:
+
+**A. Brand Moat (Brand)**
+- Consumers are willing to pay a premium for the brand, even when cheaper alternatives exist
+- Examples: Apple (iPhone premium), Hermes (luxury pricing power), Coca-Cola (global recognition)
+- Search to verify: `[Company name] brand value ranking` or `[Company name] pricing power`
+
+**B. Network Effect (Network Effect)**
+- The more users a product has, the more valuable it becomes, creating a positive "stronger with more use" feedback loop
+- Examples: Visa/Mastercard (merchants and cardholders attract each other), Meta (social network), Microsoft Office (everyone uses it so you have to as well)
+- Search to verify: `[Company name] network effect` or `[Company name] user growth ecosystem`
+
+**C. Cost Advantage (Cost Advantage)**
+- Ability to offer products or services at significantly lower costs than competitors
+- Examples: Walmart (bulk purchasing), TSMC (technology + scale barriers), Costco (membership model + optimized supply chain)
+- Search to verify: `[Company name] operating margin vs competitors` or `[Company name] cost advantage`
+
+**D. Switching Costs (Switching Cost)**
+- The cost for customers to change suppliers is high (time, money, learning curve)
+- Examples: Salesforce (switching CRM systems is extremely painful for enterprises), Adobe (designer ecosystem dependency), Oracle (database migration costs)
+- Search to verify: `[Company name] customer retention rate` or `[Company name] switching costs`
+
+**Scoring criteria**:
+- Possesses 2+ types of strong moats → ⭐⭐⭐ Wide moat (3/3 points)
+- Possesses 1 clear moat → ⭐⭐ Narrow moat (2 points)
+- Has some competitive advantages but not obvious → ⭐ Weak (1 point)
+- No obvious moat, intense industry competition → 0 points
+
+---
+
+### Overall Rating Logic
+
+Sum the scores across all 4 dimensions (maximum 12 points):
+
+| Total Score | Investment Rating | Meaning |
 |------|---------|------|
-| 10-12 分 | **A级** 🏆 | 优质价值投资标的，适合长期重仓持有 |
-| 7-9 分 | **B级** ✅ | 良好投资标的，可纳入投资组合 |
-| 4-6 分 | **C级** 🟡 | 一般，部分维度存在不足，需谨慎 |
-| 0-3 分 | **D级** ❌ | 不符合价值投资标准，不建议从价值角度买入 |
+| 10-12 points | **A-rated** 🏆 | High-quality value investment target, suitable for long-term concentrated holding |
+| 7-9 points | **B-rated** ✅ | Good investment target, suitable for portfolio inclusion |
+| 4-6 points | **C-rated** 🟡 | Average, some dimensions have shortcomings, exercise caution |
+| 0-3 points | **D-rated** ❌ | Does not meet value investing criteria, not recommended for purchase from a value perspective |
 
-**重要补充**：评级仅代表"价值投资"视角的评价。D级不代表股票不会涨——很多成长股、周期股、概念股不符合价值投资框架但短期涨幅惊人。这个框架适合寻找"买了能安心睡觉"的长期持仓。
+**Important note**: The rating represents an evaluation solely from a "value investing" perspective. A D-rating does not mean the stock won't go up — many growth stocks, cyclical stocks, and momentum stocks don't fit the value investing framework but can deliver impressive short-term gains. This framework is designed for finding long-term holdings that "let you sleep well at night."
 
-## 输出格式
+## Output Format
 
-使用以下结构化模板输出分析结果：
+Use the following structured template for the analysis output:
 
 ```
-# 📊 [公司名]（[股票代码]）价值投资分析报告
+# 📊 [Company Name] ([Ticker]) Value Investing Analysis Report
 
-**日期**：[当前日期]
-**当前股价**：$[价格]
+**Date**: [Current date]
+**Current Stock Price**: $[Price]
 
-## 🔍 四维评估
+## 🔍 Four-Dimensional Assessment
 
-### 维度1：ROE 持续性
-- 近3年ROE：[Year1]% → [Year2]% → [Year3]%
-- 评分：[X] / 3 ⭐
-- 点评：[一句话说明]
+### Dimension 1: ROE Sustainability
+- Last 3 years ROE: [Year1]% → [Year2]% → [Year3]%
+- Score: [X] / 3 ⭐
+- Commentary: [One-sentence explanation]
 
-### 维度2：负债安全性
-- 资产负债率：[X]%
-- 债务权益比：[X]
-- 评分：[X] / 3 ⭐
-- 点评：[一句话说明]
+### Dimension 2: Debt Safety
+- Debt-to-asset ratio: [X]%
+- Debt-to-equity ratio: [X]
+- Score: [X] / 3 ⭐
+- Commentary: [One-sentence explanation]
 
-### 维度3：自由现金流质量
-- 近年FCF：$[金额]
-- FCF / 净利润：[X]%
-- 评分：[X] / 3 ⭐
-- 点评：[一句话说明]
+### Dimension 3: Free Cash Flow Quality
+- Recent FCF: $[Amount]
+- FCF / Net Income: [X]%
+- Score: [X] / 3 ⭐
+- Commentary: [One-sentence explanation]
 
-### 维度4：护城河评估
-- 类型：[品牌/网络效应/成本优势/转换成本]
-- 评分：[X] / 3 ⭐
-- 点评：[一句话说明]
+### Dimension 4: Economic Moat Assessment
+- Type: [Brand/Network Effect/Cost Advantage/Switching Costs]
+- Score: [X] / 3 ⭐
+- Commentary: [One-sentence explanation]
 
-## 🏆 综合评级
+## 🏆 Overall Rating
 
-**总分**：[X] / 12
-**评级**：[A / B / C / D]
+**Total Score**: [X] / 12
+**Rating**: [A / B / C / D]
 
-## 💡 投资建议
+## 💡 Investment Recommendation
 
-[根据评级和具体情况给出建议，包括：]
-- 是否适合价值投资者长期持有
-- 主要优势和风险点
-- 如果买入，合理的估值区间参考（结合PE/PS等）
+[Provide recommendations based on the rating and specific circumstances, including:]
+- Whether the stock is suitable for long-term holding by value investors
+- Key strengths and risk factors
+- If buying, reference range for reasonable valuation (incorporating PE/PS etc.)
 
-## ⚠️ 局限性说明
+## ⚠️ Limitations Disclaimer
 
-- 此框架侧重价值投资视角，不适用于纯成长股或周期股
-- 财务数据基于历史表现，不代表未来
-- 护城河评估含主观判断成分
-- 未考虑宏观经济环境和行业趋势
-- 以上分析仅供参考，不构成投资建议
+- This framework focuses on the value investing perspective and is not applicable to pure growth stocks or cyclical stocks
+- Financial data is based on historical performance and does not represent the future
+- Moat assessment involves subjective judgment
+- Macroeconomic environment and industry trends are not considered
+- The above analysis is for reference only and does not constitute investment advice
 ```
 
-## 执行步骤
+## Execution Steps
 
-1. 确认分析目标：公司名称和股票代码
-2. 搜索当前股价
-3. 使用 web_search 搜索该公司近3年的财报关键数据（ROE、负债率、现金流）
-4. 搜索该公司的竞争优势和护城河相关分析
-5. 逐一评分4个维度
-6. 加总得出综合评级
-7. 按输出模板生成报告
-8. 附上数据来源链接
+1. Confirm the analysis target: company name and ticker symbol
+2. Search for the current stock price
+3. Use web_search to look up the company's key financial data from the past 3 years (ROE, debt ratio, cash flow)
+4. Search for analysis related to the company's competitive advantages and moat
+5. Score each of the 4 dimensions individually
+6. Sum up the scores to determine the overall rating
+7. Generate the report using the output template
+8. Attach data source links
 
-## 重要提醒
+## Important Reminders
 
-- 优先使用公司官方财报（10-K、10-Q）或权威金融数据平台（Macrotrends、Simply Wall St、Finviz）的数据
-- 如果搜索不到精确数据，可引用分析师报告中的数据并注明来源
-- 对于特殊行业（银行、REITs、公用事业），在报告中说明标准调整理由
-- 护城河评估涉及主观判断，应给出充分论据
-- 所有建议仅供参考，不构成投资建议
+- Prioritize data from official company filings (10-K, 10-Q) or authoritative financial data platforms (Macrotrends, Simply Wall St, Finviz)
+- If exact data cannot be found through search, analyst report data may be cited with source attribution
+- For special industries (banks, REITs, utilities), explain the rationale for adjusted criteria in the report
+- Moat assessment involves subjective judgment; sufficient supporting arguments should be provided
+- All recommendations are for reference only and do not constitute investment advice
